@@ -3,33 +3,9 @@ import { galleryItems } from './gallery-items';
 import simpleLightbox from 'simplelightbox';
 import 'simpleLightbox/dist/simple-lightbox.min.css';
 
-const gallery = new SimpleLightbox('#image-gallery a');
-
 // Change code below this line
 
 const galleryContainer = document.querySelector('ul.gallery');
-let currentLightbox = null;
-
-galleryContainer.addEventListener('click', event => {
-  event.preventDefault();
-  if (event.target.tagName === 'IMG') {
-    const originalSrc = event.target.dataset.source;
-    const lightbox = basicLightbox.create(
-      `<img src="${originalSrc}" alt="${event.target.alt}">`
-    );
-    lightbox.show();
-    currentLightbox = lightbox;
-
-    document.addEventListener('keydown', handleKeyPress);
-  }
-});
-const handleKeyPress = event => {
-  if (event.key === 'Escape' && currentLightbox) {
-    currentLightbox.close();
-    currentLightbox = null;
-    document.removeEventListener('keydown', handleKeyPress);
-  }
-};
 
 const images = galleryItems.map(item => {
   return `<div class = "gallery__item">
@@ -43,6 +19,8 @@ const images = galleryItems.map(item => {
     </div>`;
 });
 galleryContainer.insertAdjacentHTML('beforeend', images.join(''));
+
+const gallery = new SimpleLightbox('#image-gallery a');
 
 console.log(galleryItems);
 
