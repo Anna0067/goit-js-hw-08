@@ -1,4 +1,4 @@
-import throttle from 'https://cdn.skypack.dev/lodash.throttle';
+import throttle from 'lodash.throttle';
 
 document.addEventListener('DOMContentLoaded', function () {
   const feedbackForm = document.querySelector('.feedback-form');
