@@ -20,8 +20,10 @@ const images = galleryItems.map(item => {
 });
 galleryContainer.insertAdjacentHTML('beforeend', images.join(''));
 
-const gallery = new SimpleLightbox('#image-gallery a');
-
-console.log(galleryItems);
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
 
 console.log(galleryItems);
