@@ -5,14 +5,21 @@ document.addEventListener('DOMContentLoaded', function () {
   const emailInput = feedbackForm.querySelector('[name="email"]');
   const messageInput = feedbackForm.querySelector('[name="message"]');
 
+  let isSubmitting = false;
+
   // Funkcja do zapisywania stanu formularza w local storage
-  const saveFormState = throttle(() => {
-    const formData = {
-      email: emailInput.value,
-      message: messageInput.value,
-    };
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-  }, 500);
+  const saveFormState = throttle(
+    () => {
+      const formData = {
+        email: emailInput.value,
+        message: messageInput.value,
+      };
+      console.log('Form data before saving:', formData);
+      localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+    },
+    500,
+    { trailing: false }
+  );
 
   // Funkcja do wczytywania stanu formularza z local storage
   const loadFormState = () => {
@@ -27,12 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
   // Funkcja do czyszczenia stanu formularza i local storage po wysłaniu formularza
   const clearFormState = () => {
     localStorage.removeItem('feedback-form-state');
-    emailInput.value = '';
-    messageInput.value = '';
     console.log('Form data submitted:', {
       email: emailInput.value,
       message: messageInput.value,
     });
+
+    // Opóźnienie resetowania wartości pól formularza
+    setTimeout(() => {
+      emailInput.value = '';
+      messageInput.value = '';
+    }, 0);
   };
 
   // Dodanie obsługi zdarzenia input dla pól formularza
@@ -44,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Dodanie obsługi zdarzenia submit dla formularza
   feedbackForm.addEventListener('submit', function (event) {
     event.preventDefault();
+    isSubmitting = true;
+    saveFormState(); // Zapisz stan przed czyszczeniem
     clearFormState();
+    isSubmitting = false;
   });
 });
